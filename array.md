@@ -90,3 +90,23 @@ class Solution {
     }
 }
 ```
+
+[1013. Partition Array Into Three Parts With Equal Sum](https://leetcode.com/problems/partition-array-into-three-parts-with-equal-sum/)
+
+```ruby
+def can_three_parts_equal_sum(a)
+    return if a.empty? || a.length <= 3
+    sum = a.sum
+    return false if sum % 3 != 0
+    scanner = 0
+    ctr = 0
+    a.each do |n|
+        scanner += n
+        if scanner == sum / 3
+            ctr += 1
+            scanner = 0
+        end
+    end
+    ctr == 3
+end
+```
