@@ -16,3 +16,20 @@ def coin_change(coins, amount)
     dp[-1]
 end
 ```
+
+[139. Word Break](https://leetcode.com/problems/word-break/)
+```ruby
+def word_break(s, word_dict)
+    return false if s.nil? || s.length == 0
+    dp = Array.new(s.length, false)
+    for right in 0...s.length
+        for left in 0..right
+            if word_dict.include?(s[left..right]) && (left == 0 || dp[left - 1])
+                dp[right] = true
+                break
+            end
+        end
+    end
+    dp[-1]
+end
+```
