@@ -110,3 +110,18 @@ def can_three_parts_equal_sum(a)
     ctr == 3
 end
 ```
+
+```ruby
+def remove_duplicates(nums)
+    return 0 if nums.nil? || nums.length < 1
+    left, right = 1, 1
+    while right < nums.length
+       if(nums[right] != nums[right - 1])
+           nums[left] = nums[right]
+           left += 1
+       end
+        right += 1
+    end
+    left
+end
+```
