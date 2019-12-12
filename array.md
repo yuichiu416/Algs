@@ -125,3 +125,21 @@ def remove_duplicates(nums)
     left
 end
 ```
+
+[922. Sort Array By Parity II](https://leetcode.com/problems/sort-array-by-parity-ii/)
+```ruby
+def sort_array_by_parity_ii(a)
+    return a if a.nil? || a.length == 0
+    odd, even, idx = 1, 0, a.length
+    while odd < idx && even < idx
+        while odd < idx && a[odd].odd?
+            odd += 2
+        end
+        while even < idx && a[even].even?
+            even += 2
+        end
+        a[odd], a[even] = a[even], a[odd] if odd < idx && even < idx
+    end
+    a
+end
+```
