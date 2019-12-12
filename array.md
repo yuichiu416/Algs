@@ -143,3 +143,13 @@ def sort_array_by_parity_ii(a)
     a
 end
 ```
+[509. Fibonacci Number](https://leetcode.com/problems/fibonacci-number/)
+```ruby
+def fib(n)
+    arr = [0, 1]
+    while arr.length < n + 1
+        arr << arr[-1] + arr[-2]
+    end
+    arr[n]
+end
+```
