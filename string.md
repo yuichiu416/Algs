@@ -7,3 +7,11 @@ def remove_vowels(s)
     ans
 end
 ```
+
+[1108. Defanging an IP Address)
+
+```ruby
+def defang_i_paddr(address)
+    address.split(".").join("[.]")
+end
+```
