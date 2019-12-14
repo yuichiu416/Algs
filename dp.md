@@ -33,3 +33,16 @@ def word_break(s, word_dict)
     dp[-1]
 end
 ```
+
+[120. Triangle](https://leetcode.com/problems/triangle/)
+```ruby
+def minimum_total(triangle)
+    return 0 if triangle.nil? || triangle.length == 0
+    (triangle.length - 2).downto(0) do |i|
+        for j in 0...triangle[i].length
+            triangle[i][j] = triangle[i][j] + [triangle[i + 1][j], triangle[i + 1][j + 1]].min
+        end
+    end
+    triangle[0][0]
+end
+```
