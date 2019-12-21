@@ -143,6 +143,7 @@ def sort_array_by_parity_ii(a)
     a
 end
 ```
+
 [509. Fibonacci Number](https://leetcode.com/problems/fibonacci-number/)
 ```ruby
 def fib(n)
@@ -151,5 +152,25 @@ def fib(n)
         arr << arr[-1] + arr[-2]
     end
     arr[n]
+end
+```
+
+[841. Keys and Rooms](https://leetcode.com/problems/keys-and-rooms/)
+```ruby
+def can_visit_all_rooms(rooms)
+    stack = [0]
+    seen = Set.new()
+    seen << 0
+    while !stack.empty?
+        room = stack.pop
+        rooms[room].each do |i|
+            if !seen.include?(i)
+                stack << i
+                seen << i
+                return true if rooms.length == seen.length
+            end
+        end
+    end
+    rooms.length == seen.length
 end
 ```
