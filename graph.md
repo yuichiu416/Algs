@@ -30,3 +30,20 @@ def garden_no_adj(n, paths)
     res
 end
 ```
+
+[997. Find the Town Judge](https://leetcode.com/problems/find-the-town-judge/)
+```ruby
+def find_judge(n, trust)
+    count = Array.new(n + 1, 0)
+    
+    trust.each do |t|
+        count[t[0]] -= 1
+        count[t[1]] += 1
+    end
+    
+    for i in 1...count.length 
+        return i if count[i] == n - 1
+    end
+    -1
+end
+```
