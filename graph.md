@@ -47,3 +47,31 @@ def find_judge(n, trust)
     -1
 end
 ```
+
+[1267. Count Servers that Communicate](https://leetcode.com/problems/count-servers-that-communicate/)
+```ruby
+def count_servers(grid)
+    return 0 if grid.nil? || grid.length == 0 || grid[0].length == 0
+    rowLen = grid.length
+    colLen = grid[0].length
+    rows = Array.new(rowLen, 0)
+    cols = Array.new(colLen, 0)
+    servers = 0
+    for i in 0...rowLen
+        for j in 0...colLen
+            if grid[i][j] == 1
+                rows[i] += 1
+                cols[j] += 1
+                servers += 1
+            end
+        end
+    end
+    
+    for i in 0...rowLen
+        for j in 0...colLen
+            servers -= 1 if grid[i][j] == 1 && rows[i] == 1 && cols[j] == 1
+        end
+    end
+    servers
+end
+```
