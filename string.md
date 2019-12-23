@@ -8,7 +8,7 @@ def remove_vowels(s)
 end
 ```
 
-[1108. Defanging an IP Address)
+[1108. Defanging an IP Address](https://leetcode.com/problems/defanging-an-ip-address/)
 
 ```ruby
 def defang_i_paddr(address)
