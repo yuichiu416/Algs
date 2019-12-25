@@ -33,52 +33,68 @@ end
 
 [997. Find the Town Judge](https://leetcode.com/problems/find-the-town-judge/)
 ```ruby
-def find_judge(n, trust)
-    count = Array.new(n + 1, 0)
+# topology sort approach, slow
+def can_finish(num_courses, prerequisites)
+    matrix = Array.new(num_courses) { Array.new(num_courses, 0)}
+    indegree = Array.new(num_courses, 0)
     
-    trust.each do |t|
-        count[t[0]] -= 1
-        count[t[1]] += 1
+    for i in 0...prerequisites.length
+        ready = prerequisites[i][0]
+        pre = prerequisites[i][1]
+        indegree[ready] += 1 if matrix[pre][ready] == 0
+        matrix[pre][ready] = 1
+    end
+       
+    count = 0
+    queue = []
+    for i in 0...indegree.length
+        queue << i if indegree[i] == 0
     end
     
-    for i in 1...count.length 
-        return i if count[i] == n - 1
-    end
-    -1
-end
-```
-
-[1267. Count Servers that Communicate](https://leetcode.com/problems/count-servers-that-communicate/)
-```ruby
-def count_servers(grid)
-    return 0 if grid.nil? || grid.length == 0 || grid[0].length == 0
-    rowLen = grid.length
-    colLen = grid[0].length
-    rows = Array.new(rowLen, 0)
-    cols = Array.new(colLen, 0)
-    servers = 0
-    for i in 0...rowLen
-        for j in 0...colLen
-            if grid[i][j] == 1
-                rows[i] += 1
-                cols[j] += 1
-                servers += 1
+    while !queue.empty?
+        course = queue.shift
+        count += 1
+        for i in 0...num_courses
+            if matrix[course][i] != 0
+                indegree[i] -= 1
+                queue << i if indegree[i] == 0
             end
         end
     end
-    
-    for i in 0...rowLen
-        for j in 0...colLen
-            servers -= 1 if grid[i][j] == 1 && rows[i] == 1 && cols[j] == 1
-        end
-    end
-    servers
+    count == num_courses
 end
 ```
 
-[207. Course Schedule](https://leetcode.com/problems/course-schedule/)
 ```ruby
-# dfs approach
+# dfs approach, slow too
+def can_finish(num_courses, prerequisites)
+    graph = Array.new(num_courses){ Array.new(0)}
+    for i in 0...prerequisites.length
+        graph[prerequisites[i][1]] << prerequisites[i][0]
+    end
+    visited = Array.new(num_courses, false)
+    for i in 0...num_courses
+        return false if !dfs(graph, visited, i)
+    end
+    true
+end
+
+def dfs(graph, visited, course)
+    if visited[course]
+        return false
+    else
+        visited[course] = true
+    end
+    for i in 0...graph[course].length
+        return false if !dfs(graph, visited, graph[course][i])
+    end
+    visited[course] = false
+    true
+end
+```
+
+```ruby
+# fast dfs
 def can_finish(num_courses, prerequisites)
     map = {}
     prerequisites.each do |course, prerequisite|
@@ -91,7 +107,7 @@ def can_finish(num_courses, prerequisites)
     map.each do |course, prerequisites|
         return false if dfs(visited, stepped, course, prerequisites, map)
     end
-    true
+    return true
 end
 
 def dfs(visited, stepped, course, prerequisites, map)
@@ -104,34 +120,6 @@ def dfs(visited, stepped, course, prerequisites, map)
         end
     end
     stepped[course] = false
-    false
-end
-
-# bfs approach
-def can_finish(num_courses, prerequisites)
-    matrix  = Array.new(num_courses) {[]}
-    indegree = [0] * num_courses
-    prerequisites.each do |course, prerequisite|
-        matrix[prerequisite][course] = 1
-        # number of prerequisite or edges directed to course
-        indegree[course] += 1
-    end
-    
-    no_dependency_courses = []
-    indegree.each_index {|index| no_dependency_courses << index if indegree[index].zero? }
-    
-    courses_that_can_be_finish = 0
-    while(course = no_dependency_courses.shift)
-        courses_that_can_be_finish +=1
-        
-        matrix[course].each.with_index do |has_edge, dependent_course|
-            if has_edge == 1
-                indegree[dependent_course] -= 1
-                no_dependency_courses << dependent_course if indegree[dependent_course].zero?
-            end
-        end
-    end
-
-    courses_that_can_be_finish == num_courses
+    return false
 end
 ```
