@@ -75,3 +75,67 @@ def count_servers(grid)
     servers
 end
 ```
+
+[207. Course Schedule](https://leetcode.com/problems/course-schedule/)
+```ruby
+# dfs approach
+def can_finish(num_courses, prerequisites)
+   dfs(num_courses, prerequisites)
+end
+
+def dfs(num_courses, prerequisites)
+    map = {}
+    prerequisites.each do |course, prerequisite|
+        map[course] ||= []
+        map[course] << prerequisite
+    end
+
+    visited = []
+    stepped = []
+    map.each do |course, prerequisites|
+        return false if step(visited, stepped, course, prerequisites, map)
+    end
+    return true
+end
+
+def step(visited, stepped, course, prerequisites, map)
+    # Mark Course Visited, and implies edges visited
+    # Mark coursed as current in step
+    visited[course] = stepped[course] = true
+    prerequisites.each do |prerequisite|
+        if ((visited[prerequisite] && stepped[prerequisite]) || !visited[prerequisite] && step(visited, stepped, prerequisite, map[prerequisite]||[], map))
+            return true
+        end
+    end
+    stepped[course] = false
+    return false
+end
+
+# bfs approach
+def bfs_indegree(num_courses, prerequisites)
+    matrix  = Array.new(num_courses) {[]}
+    indegree = [0] * num_courses
+    prerequisites.each do |course, prerequisite|
+        matrix[prerequisite][course] = 1
+        # number of prerequisite or edges directed to course
+        indegree[course] += 1
+    end
+    
+    no_dependency_courses = []
+    indegree.each_index {|index| no_dependency_courses << index if indegree[index].zero? }
+    
+    courses_that_can_be_finish = 0
+    while(course = no_dependency_courses.shift)
+        courses_that_can_be_finish +=1
+        
+        matrix[course].each.with_index do |has_edge, dependent_course|
+            if has_edge == 1
+                indegree[dependent_course] -= 1
+                no_dependency_courses << dependent_course if indegree[dependent_course].zero?
+            end
+        end
+    end
+
+    courses_that_can_be_finish == num_courses
+end
+```
