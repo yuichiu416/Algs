@@ -94,32 +94,33 @@ end
 ```
 
 ```ruby
-# fast dfs
+# fast dfs using hash
 def can_finish(num_courses, prerequisites)
     map = {}
-    prerequisites.each do |course, prerequisite|
-        map[course] ||= []
-        map[course] << prerequisite
+    prerequisites.each do |prereq|
+        map[prereq[0]] ||= []
+        map[prereq[0]] << prereq[1]
     end
-
     visited = []
-    stepped = []
-    map.each do |course, prerequisites|
-        return false if dfs(visited, stepped, course, prerequisites, map)
+    visiting = []
+    map.each do |course, prereqs|
+        if dfs(visited, visiting, course, prereqs, map)
+            return false
+        end
     end
-    return true
+    true
 end
 
-def dfs(visited, stepped, course, prerequisites, map)
-    # Mark Course Visited, and implies edges visited
-    # Mark coursed as current in step
-    visited[course] = stepped[course] = true
-    prerequisites.each do |prerequisite|
-        if ((visited[prerequisite] && stepped[prerequisite]) || !visited[prerequisite] && dfs(visited, stepped, prerequisite, map[prerequisite]||[], map))
+def dfs(visited, visiting, course, prereqs, map)
+    visited[course] = visiting[course] = true
+    prereqs.each do |prereq|
+        if visited[prereq] && visiting[prereq]
+            return true
+        elsif !visited[prereq] && dfs(visited, visiting, prereq, map[prereq] || [], map)
             return true
         end
     end
-    stepped[course] = false
-    return false
+    visiting[course] = false
+    false
 end
 ```
