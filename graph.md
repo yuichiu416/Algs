@@ -80,10 +80,6 @@ end
 ```ruby
 # dfs approach
 def can_finish(num_courses, prerequisites)
-   dfs(num_courses, prerequisites)
-end
-
-def dfs(num_courses, prerequisites)
     map = {}
     prerequisites.each do |course, prerequisite|
         map[course] ||= []
@@ -93,26 +89,26 @@ def dfs(num_courses, prerequisites)
     visited = []
     stepped = []
     map.each do |course, prerequisites|
-        return false if step(visited, stepped, course, prerequisites, map)
+        return false if dfs(visited, stepped, course, prerequisites, map)
     end
-    return true
+    true
 end
 
-def step(visited, stepped, course, prerequisites, map)
+def dfs(visited, stepped, course, prerequisites, map)
     # Mark Course Visited, and implies edges visited
     # Mark coursed as current in step
     visited[course] = stepped[course] = true
     prerequisites.each do |prerequisite|
-        if ((visited[prerequisite] && stepped[prerequisite]) || !visited[prerequisite] && step(visited, stepped, prerequisite, map[prerequisite]||[], map))
+        if ((visited[prerequisite] && stepped[prerequisite]) || !visited[prerequisite] && dfs(visited, stepped, prerequisite, map[prerequisite]||[], map))
             return true
         end
     end
     stepped[course] = false
-    return false
+    false
 end
 
 # bfs approach
-def bfs_indegree(num_courses, prerequisites)
+def can_finish(num_courses, prerequisites)
     matrix  = Array.new(num_courses) {[]}
     indegree = [0] * num_courses
     prerequisites.each do |course, prerequisite|
