@@ -147,3 +147,30 @@ def dfs_has_cycle?(node)
     false
 end
 ```
+
+[802. Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states/)
+```ruby
+def eventual_safe_nodes(graph)
+    res = []
+    visited = Array.new(graph.size)
+    (0...graph.size).each do |i|
+       res << i if !cycle(i, graph, visited) 
+    end
+    res
+end
+
+def cycle(node, graph, visited)
+    return false if visited[node] == 1
+   return true if visited[node] == -1
+    
+    visited[node] = -1
+    
+    graph[node].each do |neigh|
+       return true if cycle(neigh, graph, visited)
+    end
+    
+    visited[node] = 1
+    
+    return false
+end
+```
