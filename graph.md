@@ -124,3 +124,26 @@ def dfs(visited, visiting, course, prereqs, map)
     false
 end
 ```
+
+[210. Course Schedule II](https://leetcode.com/problems/course-schedule-ii/)
+```ruby
+def find_order(n, prereqs)
+    @graph = Hash.new { |h, k| h[k] = Set.new() }
+    @visited, @on_stack, @result = Set.new(), Set.new(), []
+    prereqs.each { |u, v| @graph[u].add(v) }
+    n.times { |node| return [] if !@visited.include?(node) && dfs_has_cycle?(node) } # find one not visited and start from it
+    @result.size == n ? @result : []
+end
+
+def dfs_has_cycle?(node)
+    @visited.add(node)
+    @on_stack.add(node)
+    @graph[node].each do |v|
+        return true if @on_stack.include?(v)
+        return true if !@visited.include?(v) && dfs_has_cycle?(v)
+    end
+    @result.push(node)
+    @on_stack.delete(node) # Making DFS a post-order traversal: popping current when all its children are done
+    false
+end
+```
