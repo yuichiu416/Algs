@@ -42,3 +42,37 @@ def check_palindrome(s, left, right, longest)
     longest[0] = s[left..right] if right - left + 1 > longest[0].length
 end
 ```
+
+[13. Roman to Integer](https://leetcode.com/problems/roman-to-integer/)
+```ruby
+def roman_to_int(s)
+    nums = Array.new(s.length)
+    for i in 0...s.length
+        case s[i]
+            when "M"
+                nums[i] = 1000
+            when "D"
+                nums[i] = 500
+            when "C"
+                nums[i] = 100
+            when "L"
+                nums[i] = 50
+            when "X"
+                nums[i] = 10
+            when "V"
+                nums[i] = 5
+            when "I"
+                nums[i] = 1
+        end
+    end
+    sum = 0
+    for i in 0...nums.length - 1
+        if nums[i] < nums[i + 1]
+            sum -= nums[i]
+        else
+            sum += nums[i]
+        end
+    end
+    sum + nums[-1]
+end
+```
