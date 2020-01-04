@@ -174,3 +174,23 @@ def can_visit_all_rooms(rooms)
     rooms.length == seen.length
 end
 ```
+
+[1. Two Sum](https://leetcode.com/problems/two-sum/)
+```java
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap();
+        int[] ans = new int[2];
+        
+        for(int i = 0; i < nums.length; i++){
+            Integer temp = map.get(nums[i]);
+            if(temp != null){
+                return new int[]{temp, i};
+            } else{
+                map.put(target - nums[i], i);
+            }
+        }
+        return null;
+    }
+}
+```
