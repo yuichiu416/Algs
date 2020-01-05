@@ -76,3 +76,23 @@ def roman_to_int(s)
     sum + nums[-1]
 end
 ```
+
+[819. Most Common Word](https://leetcode.com/problems/most-common-word/)
+```java
+class Solution {
+    public String mostCommonWord(String paragraph, String[] banned) {
+        Map<String, Integer> map = new HashMap();
+        
+        String[] words = paragraph.replaceAll("\\W+", " ").toLowerCase().split("\\s+");
+        Set ban = new HashSet<>(Arrays.asList(banned));
+        
+        for(String word : words){
+            if(!ban.contains(word)){
+                    map.put(word, map.getOrDefault(word, 0) + 1);
+            }
+        }
+        
+        return Collections.max(map.entrySet(), Map.Entry.comparingByValue()).getKey();
+    }
+}
+```
