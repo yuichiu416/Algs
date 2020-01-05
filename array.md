@@ -201,11 +201,11 @@ class Solution {
         int left = 0, right = points.length - 1;
         
         while(left <= right){
-            int mid = helper(points, left, right);
-            if(mid < K){
-                left = mid + 1;
-            } else if (mid > K){
-                right = mid - 1;
+            int idx = helper(points, left, right);
+            if(idx < K){
+                left = idx + 1;
+            } else if (idx > K){
+                right = idx - 1;
             } else{
                 break;
             }
