@@ -194,3 +194,41 @@ class Solution {
     }
 }
 ```
+[973. K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/)
+```java
+class Solution {
+    public int[][] kClosest(int[][] points, int K) {
+        int left = 0, right = points.length - 1;
+        
+        while(left <= right){
+            int mid = helper(points, left, right);
+            if(mid < K){
+                left = mid + 1;
+            } else if (mid > K){
+                right = mid - 1;
+            } else{
+                break;
+            }
+        }
+        return Arrays.copyOfRange(points, 0, K);
+    }
+    
+    private int helper(int[][] points, int left, int right){
+        int[] pivot = points[left];
+        while(left < right){
+            while(left < right && distance(points[right], pivot) >= 0)
+                right--;
+            points[left] = points[right];
+            while( left < right && distance(points[left], pivot) <= 0)
+                left++;
+            points[right] = points[left];
+        }
+        points[left] = pivot;
+        return left;
+    }
+    
+    private int distance(int[] p1, int[]p2){
+        return p1[0] * p1[0] + p1[1] * p1[1] - p2[0] * p2[0] - p2[1] * p2[1];
+    }
+}
+```
